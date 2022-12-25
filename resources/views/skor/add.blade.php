@@ -17,9 +17,9 @@
             <div class="col-md-5">
               <div class="form-group">
                 <select class="form-control klubSelect" name="klub1[]" id="exampleFormControlSelect1" required>
-                  <option>-- pilih klub --</option>
+                  <option value="">-- pilih klub --</option>
                   @foreach($klub as $k)
-                  <option value="{{$k->id.'bb'}}">{{$k->nama}}</option>
+                  <option value="{{$k->id}}">{{$k->nama}}</option>
                   @endforeach
                 </select>
               </div>
@@ -43,9 +43,9 @@
             <div class="col-md-5">
               <div class="form-group">
                 <select class="form-control" name="klub2[]" id="exampleFormControlSelect1" required>
-                  <option>-- pilih klub --</option>
+                  <option value="">-- pilih klub --</option>
                   @foreach($klub as $k)
-                  <option value="{{$k->id.'aa'}}">{{$k->nama}}</option>
+                  <option value="{{$k->id}}">{{$k->nama}}</option>
                   @endforeach
                 </select>
               </div>
@@ -58,7 +58,7 @@
           </div>
         </div>
         <div class="col-md-12 my-5">
-          <a href="javascript:void(0)" class="btn btn-success mb-2 addMore">Add</a>
+          <a href="javascript:void(0)" class="btn btn-success mb-2 addMore">+ Add Section</a>
           <button type="submit" class="btn btn-success mb-2 float-right">Submit</button>
         </div>
       </form>
@@ -74,6 +74,7 @@
 let cloneTemplate = $('.cloneForm').clone(true);
 let formAppend = $('.fieldGroup');
 let countForm = 1;
+$('.delete').css("display", "none");
 let arrKlub = () => {
   return $.ajax({
     url: `{{ route('klub_data') }}`,
@@ -96,14 +97,19 @@ $(".addMore").click(function() {
   countForm += 1;
   let newForm = cloneTemplate.clone(true);
   formAppend.append(newForm);
+  $('.delete').css("display", "block");
   return false;
 });
 
 $(document).on('click', '.delete', function() {
   if (countForm === 1) {
+
     alert("cant delete last form");
   } else {
     countForm -= 1;
+    if (countForm === 1) {
+      $('.delete').css("display", "none");
+    }
     $(this).closest(".cloneForm").remove();
   }
 
